@@ -71,40 +71,41 @@ A one-dimensional Convolutional Neural Network (1D CNN) is used for binary class
 ## Repository Structure
 
 ```
-Radar-Based-Kick-Gesture-Recognition/
-│
+.
 ├── Code/
 │   ├── Project_Thesis_Radar_gesture_Data_Segmentation.ipynb
-│   └── README_code.md
-│
+│   ├── Project_Thesis.py
+│   └── README.md
 ├── Report/
 │   ├── Project_Thesis.pdf
 │   └── Project_Summary.pdf
-│
 ├── Presentation/
-│   └── Project_thesis.pptx
-│
+│   ├── Project_thesis.pptx
+│   └── Project_Thesis_Presentation.pdf
 ├── Results/
-│   ├── figures/
-│   │   ├── segmentation_examples/
-│   │   ├── roc_curves/
-│   │   ├── confusion_matrices/
-│   │   └── training_curves/
-│   │
-│   ├── performance_tables/
-│   │   └── method_comparison.pdf
-│   │
-│   └── README_results.md
-│
+│   ├── Figures/
+│   │   ├── Confusion_Matrices.pdf
+│   │   ├── ROC_Curves.pdf
+│   │   ├── Segmentation_Results.pdf
+│   │   └── Training_Curves.pdf
+│   ├── Performance-Tables/
+│   │   └── Method_Comparison_Tables.pdf
+│   └── README.md
 ├── README.md
-└── requirements.txt
+├── requirements.txt
+├── LICENSE
+└── .gitignore
 ```
 
 
 ## How to Run
-1. Install dependencies listed in `requirements.txt`  
-2. Open the Jupyter notebook in the `Code/` directory  
-3. Execute the notebook sequentially to reproduce preprocessing, segmentation, training, and evaluation steps  
+1. Create a Python environment and install dependencies with `python -m pip install -r requirements.txt`. The original environment versions were not recorded; these are minimum requirements, not a locked environment.
+2. Obtain the radar dataset separately; it is not included in this repository.
+3. Set `input_dir` in the data-loading cell to your dataset directory. It must contain one folder per person, with CSV recordings containing four I/Q columns. The loader parses filenames as `gesture__repetition` and skips person folders starting with a digit.
+4. Open [the notebook](Code/Project_Thesis_Radar_gesture_Data_Segmentation.ipynb) and execute its cells in order. [Project_Thesis.py](Code/Project_Thesis.py) contains the same experiment code as a standalone script; set its `input_dir` before running it.
+5. Review the subject selection before reproducing results: the supplied code loads only 10 people (`pers=10`) but uses a test-ID list intended for a larger dataset. Of the 10 loaded IDs (0–9), 2, 5 and 8 are test subjects, giving a 70/30 split. Person IDs depend on directory iteration order. The 80/20 description above is the reported study protocol, not the default supplied-code split.
+
+The code and recorded outputs are preserved from the supplied thesis files. Training has not been rerun as part of repository organisation.  
 
 
 ## Deliverables
@@ -118,3 +119,10 @@ Radar-Based-Kick-Gesture-Recognition/
 ## Conclusion
 This project demonstrates that combining physically meaningful temporal segmentation with deep learning enables robust and person-independent radar-based kick gesture recognition.
 
+
+
+## Project Documents and Results
+- [Full thesis](Report/Project_Thesis.pdf) and [project summary](Report/Project_Summary.pdf)
+- [Presentation PDF](Presentation/Project_Thesis_Presentation.pdf) and [editable slides](Presentation/Project_thesis.pptx)
+- [Results guide](Results/README.md) and [method comparison tables](Results/Performance-Tables/Method_Comparison_Tables.pdf)
+- [Code guide](Code/README.md)

@@ -30,5 +30,12 @@ This folder contains the experimental outputs generated during the evaluation of
 - A window length of 2000 samples achieves the best balance between information content and noise.
 
 ## Notes
-- All results are obtained using a person-wise 80/20 train–test split.
+- The reported study protocol uses a person-wise 80/20 train–test split. The supplied code defaults to a smaller subject subset; see the [reproduction notes](../README.md#how-to-run).
 - Test data consists exclusively of unseen subjects to ensure realistic generalization performance.
+
+## Files
+- [Segmentation results](Figures/Segmentation_Results.pdf)
+- [Training curves](Figures/Training_Curves.pdf)
+- [ROC curves](Figures/ROC_Curves.pdf)
+- [Confusion matrices](Figures/Confusion_Matrices.pdf)
+- [Method comparison tables](Performance-Tables/Method_Comparison_Tables.pdf)
