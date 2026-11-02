@@ -22,5 +22,3 @@ The code implements an end-to-end pipeline consisting of:
 All experiments are executed using the Jupyter notebook provided in this folder.
 
 Required Python libraries are listed in the `requirements.txt` file at the repository root.
-
-`Project_Thesis.py` is the script version of the notebook. Both require the external dataset and an updated `input_dir`. See the [root README](../README.md#how-to-run) for setup and the subject-split limitation.

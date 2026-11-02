@@ -12,4 +12,29 @@ keras>=2.8
 
 jupyter
 notebook
-joblib
+
+
+
+"""
+numpy → signal arrays, magnitude, gradients
+
+scipy → bandpass filter (butter, sosfiltfilt), STFT
+
+pandas → result tables, metrics storage
+
+matplotlib → signal plots, ROC, training curves
+
+seaborn → boxplots, distributions
+
+scikit-learn →
+
+GroupShuffleSplit
+
+accuracy, precision, recall
+
+ROC, confusion matrix
+
+tensorflow / keras → 1D CNN (Conv1D, MaxPool, GAP, Dense)
+"""
+
+jupyter / notebook → execution environment
