@@ -114,8 +114,13 @@ def load_sensor_data(mode="60", gesture_dict=None, input_dir=None, pers=None, to
     df = pd.concat(data, ignore_index=True)
     return df
 
-# Use the input_dir variable already defined in your notebook
-input_dir = r"D:\Data Augmentation and Model Optimization Project\dataset\dataset"
+# Set RADAR_DATA_DIR before starting Python/Jupyter, or edit this path.
+input_dir = os.path.expanduser(os.environ.get("RADAR_DATA_DIR", "data60"))
+if not os.path.isdir(input_dir):
+    raise FileNotFoundError(
+        f"Radar dataset directory not found: {input_dir!r}. "
+        "Set RADAR_DATA_DIR or update input_dir to your dataset folder."
+    )
 
 # Load data for first 10 persons
 data = load_sensor_data(input_dir=input_dir, pers=10)
@@ -142,9 +147,7 @@ def adding_combinatios_and_labels(df):
     df = df.drop("index", axis=1)
     df["Idx"] = df.groupby("Combination", sort = False).cumcount()
     return df
-load_sensor_data = data # Use the input_dir variable already defined in your notebook
-
-data = adding_combinatios_and_labels(load_sensor_data)
+data = adding_combinatios_and_labels(data)
 # Example usage
 print("Data with combinations and labels added successfully.")
 print(data.head())

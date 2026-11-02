@@ -1,120 +1,94 @@
-# Radar-Based Kick Gesture Recognition Using Temporal Segmentation and Deep Learning
+# Radar-Based Kick Gesture Recognition
 
-## Project Overview
-This project investigates a radar-based approach for reliable kick gesture recognition, aimed at hands-free automotive access systems. The work focuses on accurately identifying the temporal region of a kick gesture within long radar recordings and evaluating the impact of different temporal segmentation strategies on classification performance.
+Project thesis at OTH Regensburg — Aman Syed
 
-An FMCW radar sensor is used to capture complex baseband I/Q signals, which are processed using signal processing techniques and classified using a deep learning model. The system is evaluated under a person-independent setup to ensure realistic generalization to unseen users.
+This project studies how temporal segmentation affects radar-based kick gesture recognition for hands-free vehicle access. It compares energy, gradient and Doppler (STFT) segmentation, followed by a 1D convolutional neural network that classifies valid kicks and invalid movements.
 
+The repository brings together the experiment notebook, its Python script version, the thesis, presentation and recorded results.
 
+## Approach
 
-## Objectives
-- Detect and localize kick gestures in long radar time-series data  
-- Compare multiple temporal segmentation techniques  
-- Train a deep learning model for binary kick gesture classification  
-- Evaluate system performance using person-wise subject splits  
+The pipeline loads four radar I/Q channels, applies bandpass filtering and amplitude normalisation, and extracts fixed-length segments around detected motion. The experiments compare window lengths of 1000, 2000 and 4000 samples. Subjects are separated for training, validation and testing.
 
+The thesis reports that Doppler-based segmentation gives the most consistent performance, with a 2000-sample window providing the best overall balance. The detailed comparisons are in the [thesis](Report/Project_Thesis.pdf) and [results tables](Results/Performance-Tables/Method_Comparison_Tables.pdf).
 
+## Files
 
-## Methodology Overview
-The proposed framework follows an end-to-end processing pipeline:
+| Folder | Contents |
+| --- | --- |
+| [Code](Code/readme.md) | Jupyter notebook and matching Python script |
+| [Report](Report/Project_Thesis.pdf) | Full thesis and project summary |
+| [Presentation](Presentation/Project_Thesis_Presentation.pdf) | Presentation PDF and editable PowerPoint slides |
+| [Results](Results/readme.md) | Segmentation figures, training curves, ROC curves, confusion matrices and comparison tables |
 
-1. Radar data acquisition using FMCW radar  
-2. Signal preprocessing (bandpass filtering and normalization)  
-3. Temporal segmentation to locate the kick gesture  
-4. Fixed-length window extraction  
-5. CNN-based gesture classification  
-6. Person-wise training and sliding-window evaluation  
-
-
-
-## Temporal Segmentation Techniques
-Three segmentation methods are implemented and compared:
-
-- **Energy-Based Segmentation**  
-  Identifies the kick gesture by detecting peaks in short-time signal energy.
-
-- **Gradient-Based Segmentation**  
-  Locates the onset of the kick by identifying rapid temporal changes in signal magnitude.
-
-- **Doppler-Based (STFT) Segmentation**  
-  Uses time–frequency analysis to capture motion-induced Doppler shifts and identify peak velocity regions.
-
-
-
-## Classification Model
-A one-dimensional Convolutional Neural Network (1D CNN) is used for binary classification of segmented radar windows into:
-- **Valid Kick**
-- **Invalid Motion**
-
-
-
-## Evaluation Strategy
-- Person-wise 80/20 train–test split  
-- Test data consists exclusively of unseen subjects  
-- Sliding-window inference during testing  
-- Performance metrics:
-  - Accuracy (ACC)
-  - Precision
-  - Recall
-  - False Positive Rate (FPR)
-  - ROC–AUC  
-
-
-
-## Key Results
-- Temporal segmentation significantly affects classification performance  
-- Doppler-based segmentation achieves the most robust and consistent results  
-- Gradient-based segmentation provides a good balance between accuracy and complexity  
-- A window length of **2000 samples** offers the best overall performance  
-
-
-## Repository Structure
-
-```
-Radar-Based-Kick-Gesture-Recognition/
-│
-├── Code/
-│   ├── Project_Thesis_Radar_gesture_Data_Segmentation.ipynb
-│   └── README_code.md
-│
-├── Report/
-│   ├── Project_Thesis.pdf
-│   └── Project_Summary.pdf
-│
-├── Presentation/
-│   └── Project_thesis.pptx
-│
-├── Results/
-│   ├── figures/
-│   │   ├── segmentation_examples/
-│   │   ├── roc_curves/
-│   │   ├── confusion_matrices/
-│   │   └── training_curves/
-│   │
-│   ├── performance_tables/
-│   │   └── method_comparison.pdf
-│   │
-│   └── README_results.md
-│
-├── README.md
-└── requirements.txt
+```text
+Code/
+  Project_Thesis_Radar_gesture_Data_Segmentation.ipynb
+  Project_Thesis.py
+  readme.md
+Report/
+  Project_Thesis.pdf
+  Project_Summary.pdf
+Presentation/
+  Project_Thesis_Presentation.pdf
+  Project_thesis.pptx
+Results/
+  Figures/
+    Confusion_Matrices.pdf
+    ROC_Curves.pdf
+    Segmentation_Results.pdf
+    Training_Curves.pdf
+  Performance-Tables/
+    Method_Comparison_Tables.pdf
+  readme.md
+README.md
+requirements.txt
 ```
 
+## Running the experiments
 
-## How to Run
-1. Install dependencies listed in `requirements.txt`  
-2. Open the Jupyter notebook in the `Code/` directory  
-3. Execute the notebook sequentially to reproduce preprocessing, segmentation, training, and evaluation steps  
+Create and activate a Python environment, then install the dependencies from the repository root:
 
+```bash
+python -m pip install -r requirements.txt
+```
 
-## Deliverables
-- Complete source code implementation  
-- Project thesis document  
-- Project summary report  
-- Final presentation slides  
-- Experimental results and analysis  
+The radar dataset is not included. Set `RADAR_DATA_DIR` to its location before starting Python or Jupyter. On macOS or Linux:
 
+```bash
+export RADAR_DATA_DIR="/absolute/path/to/dataset"
+python -m notebook
+```
 
-## Conclusion
-This project demonstrates that combining physically meaningful temporal segmentation with deep learning enables robust and person-independent radar-based kick gesture recognition.
+In PowerShell, use `$env:RADAR_DATA_DIR = "C:/path/to/dataset"` before starting Jupyter. You can also set `input_dir` directly in the notebook's data-loading cell or in the script. Without a setting, the code looks for `data60` in the current working directory.
 
+Open [the notebook](Code/Project_Thesis_Radar_gesture_Data_Segmentation.ipynb) and run the cells in order. To run the script instead, use:
+
+```bash
+python Code/Project_Thesis.py
+```
+
+The loader expects one folder per person, with comma-separated recordings containing four I/Q channels. Recording names must encode the gesture and integer repetition as `gesture__repetition`, as in the original dataset. Person folders whose names start with a digit are skipped by the current loader. See the [code notes](Code/readme.md) before using another dataset.
+
+## Reproducing the reported results
+
+The notebook outputs and PDF figures are records of the original experiments. Installing the dependencies alone will not reproduce them: the original dataset, subject selection and environment are also needed. Dependency versions here are minimum requirements; the original environment was not locked.
+
+The supplied implementation has a few limitations to account for:
+
+- The thesis describes an 80/20 person-wise split, but the supplied code loads the first 10 people and assigns IDs 2, 5 and 8 to testing. With all 10 people loaded, that is a 70/30 split before validation and any discarded recordings. IDs depend on directory iteration order, so record the person-to-ID mapping when running it.
+- The test loop passes already segmented inputs of length `L` to the sliding-window helper. This produces one prediction per segment; it does not scan the full 12000-sample recording in that loop.
+- Filtering and normalisation happen before the subject split. Filtering is applied across the concatenated recordings, and normalisation uses the full dataset. A stricter evaluation would filter recordings separately and fit normalisation using training subjects only.
+
+Changes to those evaluation steps need a fresh experiment run and new result tables. The archived reports and figures have been kept unchanged.
+
+## Documents
+
+- [Full thesis](Report/Project_Thesis.pdf)
+- [Project summary](Report/Project_Summary.pdf)
+- [Presentation PDF](Presentation/Project_Thesis_Presentation.pdf)
+- [Editable presentation](Presentation/Project_thesis.pptx)
+
+## Author
+
+Aman Syed · OTH Regensburg
